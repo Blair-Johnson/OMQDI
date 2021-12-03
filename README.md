@@ -6,5 +6,5 @@ This python module implements the Objective Quality Measure of Denoised Images, 
 ## Usage
 ```python
 from IQA import OMQDI
-OMQDI_metric, edge_preservation_factor, noise_suppression_factor = OMQDI(X, Y)
+omqdi_value, edge_preservation_factor, noise_suppression_factor = OMQDI(X, Y)
 ```
