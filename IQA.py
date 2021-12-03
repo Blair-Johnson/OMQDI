@@ -62,40 +62,27 @@ def S(decompCoeffs: list, alpha = 0.8) -> float:
         energy += 2**(3-n)*En(lvlCoeffs, alpha)
     return energy
 
-def local_mean(img: np.array, pad_mode = 'reflect') -> np.array:
+def local_mean(img: np.array, window = 3, pad_mode = 'reflect') -> np.array:
     '''
     Description:
         This function calculates the local mean of grey levels in image
     Args:
         img, Input image (M, N)
+        window, Size of window for local mean calculation
         pad_mode, Padding mode for mean convolution
     '''
-    return convolve(img, np.full((3,3), 1.0/9.0), mode = pad_mode)
+    return convolve(img, np.full((window, window), 1/window**2), mode = pad_mode)
 
 def local_variance(img: np.array) -> np.array:
     '''
     Description:
-        This function calculates the local varaince of an image
+        This function calculates the local varaince of an image as 
+        formulated in the original paper
     Args:
         img, Input image (M, N)
     '''
-    # These lines implement the local variance as described in the original paper
-    # mu_sq = np.square(local_mean(img))
-    # return local_mean(np.square(img)) - mu_sq
-    M, N = img.shape
-    mu_local = local_mean(img)
-    '''
-    # I believe that this implements (really slowly) the 'True' windowed variance across the image
-    out = np.zeros((M,N))
-    img_pad = np.pad(img,1, mode='reflect')
-    for i in range(M):
-        for j in range(N):
-            k = i+1
-            l = j+1
-            out[i,j] = np.sum(np.square(img_pad[k-1:k+1,l-1:l+1] - np.mean(img_pad[k-1:k+1,l-1:l+1])))/9.0
-    return out
-    '''
-    return np.sum(np.square(img-mu_local))/(M*N)
+    mu_sq = np.square(local_mean(img))
+    return local_mean(np.square(img)) - mu_sq
 
 def noise_power(img: np.array) -> float:
     '''
