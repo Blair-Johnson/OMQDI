@@ -79,8 +79,12 @@ def local_variance(img: np.array) -> np.array:
     Args:
         img, Input image (M, N)
     '''
-    mu_sq = np.square(local_mean(img))
-    return local_mean(np.square(img)) - mu_sq
+    # These lines implement the local variance as described in the original paper
+    # mu_sq = np.square(local_mean(img))
+    # return local_mean(np.square(img)) - mu_sq
+    M, N = img.shape
+    mu = local_mean(img)
+    return np.sum(np.square(img-mu))/(M*N)
 
 def noise_power(img: np.array) -> float:
     '''
@@ -142,16 +146,21 @@ if __name__ == '__main__':
     im_med = scim.median_filter(im_noise, 5)
     BO, BQ1, BQ2 = OMQDI(im_noise,im_denoise)
     OO, OQ1, OQ2 = OMQDI(im_noise,im_med)
+    UO, UQ1, UQ2 = OMQDI(im_noise,im)
     fig = plt.figure()
-    ax1 = fig.add_subplot(1,3,1)
+    ax1 = fig.add_subplot(2,2,1)
     ax1.imshow(im_noise)
     ax1.set_title("Noisy")
-    ax2 = fig.add_subplot(1,3,2)
+    ax2 = fig.add_subplot(2,2,2)
     ax2.imshow(im_med)
     ax2.set_title("5x5 Median Filter")
     ax2.set_xlabel(f'OMQDI: {round(OO,3)}, EPF: {round(OQ1,3)}, NSF: {round(OQ2,3)}')
-    ax3 = fig.add_subplot(1,3,3)
+    ax3 = fig.add_subplot(2,2,3)
     ax3.imshow(im_denoise)
     ax3.set_title("Gaussian Blur std = 3")
     ax3.set_xlabel(f'OMQDI: {round(BO,3)}, EPF: {round(BQ1,3)}, NSF: {round(BQ2,3)}')
+    ax4 = fig.add_subplot(2,2,4)
+    ax4.imshow(im)
+    ax4.set_title("Original Reference")
+    ax4.set_xlabel(f'OMQDI: {round(UO,3)}, EPF: {round(UQ1,3)}, NSF: {round(UQ2,3)}')
     plt.show()
