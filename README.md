@@ -10,6 +10,8 @@ X = imread(noisey.png)
 Y = imread(denoised.png)
 omqdi_value, edge_preservation_factor, noise_suppression_factor = OMQDI(X, Y)
 ```
+![Example Images](https://github.com/Blair-Johnson/OMQDI/blob/main/example.png?raw=true)
+
 ## Notes
 The local variance calculation in this implementation differs from the original paper. The original paper cites an equation that is not equivalent to local variance (equation 6), and this results in erroneous noise suppression factor values.
 
