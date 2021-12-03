@@ -1,5 +1,4 @@
-# OMQDI
-Objective Measure of Quality of Denoised Images
+# OMQDI: Objective Measure of Quality of Denoised Images
 
 This python module implements the Objective Quality Measure of Denoised Images, a no-reference image quality assessment metric developed for magnetic resonance images.
 
