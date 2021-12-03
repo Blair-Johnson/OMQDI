@@ -83,8 +83,19 @@ def local_variance(img: np.array) -> np.array:
     # mu_sq = np.square(local_mean(img))
     # return local_mean(np.square(img)) - mu_sq
     M, N = img.shape
-    mu = local_mean(img)
-    return np.sum(np.square(img-mu))/(M*N)
+    mu_local = local_mean(img)
+    '''
+    # I believe that this implements (really slowly) the 'True' windowed variance across the image
+    out = np.zeros((M,N))
+    img_pad = np.pad(img,1, mode='reflect')
+    for i in range(M):
+        for j in range(N):
+            k = i+1
+            l = j+1
+            out[i,j] = np.sum(np.square(img_pad[k-1:k+1,l-1:l+1] - np.mean(img_pad[k-1:k+1,l-1:l+1])))/9.0
+    return out
+    '''
+    return np.sum(np.square(img-mu_local))/(M*N)
 
 def noise_power(img: np.array) -> float:
     '''
