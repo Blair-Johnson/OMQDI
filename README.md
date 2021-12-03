@@ -10,6 +10,9 @@ X = imread(noisey.png)
 Y = imread(denoised.png)
 omqdi_value, edge_preservation_factor, noise_suppression_factor = OMQDI(X, Y)
 ```
+## Notes
+The local variance calculation in this implementation differs from the original paper. The original paper cites an equation that is not equivalent to local variance (equation 6), and this results in erroneous noise suppression factor values.
+
 ## References
 [1] V. R. Simi, D. Reddy Edla, and J. Joseph, “A no-reference metric to assess quality of denoising for Magnetic Resonance images,” Biomedical Signal Processing and Control, vol. 70, p. 102962, 2021, doi: 10.1016/j.bspc.2021.102962.
   
